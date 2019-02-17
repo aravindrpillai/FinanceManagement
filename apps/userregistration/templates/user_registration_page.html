@@ -124,7 +124,7 @@
                             <div class="form-group row">
                                 <label for="user_name" class="col-md-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
-                                    {% render_field form.password %}
+                                    {% render_field form.password id="ps1"%}
                                     {%  render_field form.password.error %}
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                             <div class="form-group row">
                                 <label for="user_name" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
                                 <div class="col-md-6">
-                                    {% render_field form.password %}
+                                    {% render_field form.password id="ps2"%}
                                 </div>
                             </div>
 
@@ -149,7 +149,20 @@
     </div>
 
 </main>
+<script type="application/javascript">
+    function validform()
+    {
+       if($("#ps1").value!=$("#ps2").value)
+       {
+          return true;
+       }
+       else {
+           alert("password field should be equal")
+           return false;
 
+       }
+    }
+</script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>

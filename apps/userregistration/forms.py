@@ -3,7 +3,7 @@ from apps.userregistration.models import EN_UserRegistration
 class Formregistration(forms.Form):
     Name=forms.CharField(min_length=5,max_length=25,required=True)
     username=forms.CharField(min_length=5,required=True)
-    password=forms.CharField(min_length=6,required=True)
+    password=forms.CharField(min_length=6,required=True,widget=forms.PasswordInput)
     emailname=forms.EmailField(required=True)
 
     def clean(self):
