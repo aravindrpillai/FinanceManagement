@@ -280,10 +280,14 @@
             <!--<img src="logo.png" width=30%!important; height=30%!important;/> -->
             <h1>Finance Manager</h1>
         </div>
-        <form>
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+        <form action="Submitlogdata" method="post" >
+            {% csrf_token %}
+            {% load widget_tweaks %}
+            {% render_field form.Email id="login" class="fadeIn second" name="login" %}
+            {%  render_field form.Password id="password" class="fadeIn third" name="login" %}
+           <!-- <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
             <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-            <input type="submit" class="fadeIn fourth" value="Log In">
+            --><input type="submit" class="fadeIn fourth" value="Log In">
         </form>
         <div id="formFooter">
             <a class="underlineHover" href="#">Forgot Password?</a> &nbsp;&nbsp;&nbsp;

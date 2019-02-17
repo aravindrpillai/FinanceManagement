@@ -14,11 +14,11 @@ class Formregistration(forms.Form):
         emailname=data["emailname"]
         if username is None:
             self.add_error("username","username is required")
-        elif name is None:
+        if name is None:
             self.add_error("Name","Name is required")
-        elif password is None:
+        if password is None:
             self.add_error("password","password is required")
-        elif emailname is None:
+        if emailname is None:
             self.add_error("emailname","emailname is required")
 
         return data
