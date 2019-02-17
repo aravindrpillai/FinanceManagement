@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path(r'',views.index, name="Loads User Registration Page"),
-    path(r'Submitdata',views.Submitdata,name="save_userregistration"),
+    path(r'Submitdata',views.submitData,name="Saves User Registration Data To DB"),
 ]

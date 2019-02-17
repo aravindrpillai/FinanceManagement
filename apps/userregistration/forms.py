@@ -1,25 +1,30 @@
 from django import forms
-from apps.userregistration.models import EN_UserRegistration
-class Formregistration(forms.Form):
-    Name=forms.CharField(min_length=5,max_length=25,required=True)
-    username=forms.CharField(min_length=5,required=True)
-    password=forms.CharField(min_length=6,required=True)
-    emailname=forms.EmailField(required=True)
+from apps.userregistration.models import EN_Users
+
+class FORM_UserRegistration(forms.Form):
+
+    name = forms.CharField(min_length=5,max_length=25,required=True)
+    username = forms.CharField(min_length=5,required=True)
+    password = forms.CharField(min_length=6,required=True)
+    email = forms.EmailField(required=True)
 
     def clean(self):
         data=self.cleaned_data
-        username=data["username"]
-        name=data["Name"]
-        password=data["password"]
-        emailname=data["emailname"]
-        if username is None:
-            self.add_error("username","username is required")
-        elif name is None:
-            self.add_error("Name","Name is required")
-        elif password is None:
-            self.add_error("password","password is required")
-        elif emailname is None:
-            self.add_error("emailname","emailname is required")
+        if data["username"] is None:
+            self.add_error("username","Username is required")
+        elif EN_Users.objects.filter(username=data["username"]).exists():
+            self.add_error("username","Username already exists")
+
+        if data["name"] is None:
+            self.add_error("name","Name is required")
+
+        if data["password"] is None:
+            self.add_error("password","Password is required")
+
+        if data["email"] is None:
+            self.add_error("email","Email is required")
+        elif EN_Users.objects.filter(email=data["email"]).exists():
+            self.add_error("email", "Email ID already exists")
 
         return data
 

@@ -96,20 +96,35 @@
                 <div class="card">
                     <div class="card-header">New User Registration</div>
                     <div class="card-body">
-                        <form name="my-form" onsubmit="return validform()" action="Submitdata" method="post">
+                        <form name="my-form" action="Submitdata" method="post">
                             {% csrf_token %}
                             {% load widget_tweaks %}
+
+                            <div style="text-align: center;">
+                                {% if messages %}
+                                    {% for msg in messages %}
+                                        {% if msg.level_tag == "success" %}
+                                            <label style="color: lawngreen"> {{ msg.message }}</label>
+                                        {% else %}
+                                            <label style="color: red"> {{ msg.message }}</label>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
                             <div class="form-group row">
                                 <label for="full_name" class="col-md-4 col-form-label text-md-right">Full Name</label>
                                 <div class="col-md-6">
-                                    {% render_field form.Name %}
+                                    {% render_field form.name %}
+                                    <label style="color: red">{% render_field form.name.errors %}</label>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail ID</label>
                                 <div class="col-md-6">
-                                    {% render_field form.emailname %}
+                                    {% render_field form.email %}
+                                    <label style="color: red">{% render_field form.email.errors %}</label>
                                 </div>
                             </div>
 
@@ -117,6 +132,7 @@
                                 <label for="user_name" class="col-md-4 col-form-label text-md-right">Login User Name</label>
                                 <div class="col-md-6">
                                     {% render_field form.username %}
+                                    <label style="color: red">{% render_field form.username.errors %}</label>
                                 </div>
                             </div>
 
@@ -125,27 +141,20 @@
                                 <label for="user_name" class="col-md-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
                                     {% render_field form.password %}
-                                    {%  render_field form.password.error %}
+                                    {%  render_field form.password.errors %}
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="user_name" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                                <div class="col-md-6">
-                                    {% render_field form.password %}
-                                </div>
-                            </div>
-
 
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-warning"> Reset </button>
                                 <button type="submit" class="btn btn-primary"> Register </button>
                             </div>
-                    </form>
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 </main>
@@ -154,6 +163,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
-</html>
-</body>
-</html>
