@@ -277,21 +277,31 @@
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <div class="fadeIn first">
-            <!--<img src="logo.png" width=30%!important; height=30%!important;/> -->
             <h1>Finance Manager</h1>
         </div>
-        <form action="Submitlogdata" method="post" >
+        <form action="ValidateLogin" method="post" >
+            <div style="text-align: center;">
+                {% if messages %}
+                    {% for msg in messages %}
+                        {% if msg.level_tag == "success" %}
+                            <label style="color: lawngreen"> {{ msg.message }}</label>
+                        {% else %}
+                            <label style="color: red"> {{ msg.message }}</label>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
             {% csrf_token %}
             {% load widget_tweaks %}
-            {% render_field form.Email id="login" class="fadeIn second" name="login" %}
-            {%  render_field form.Password id="password" class="fadeIn third" name="login" %}
-           <!-- <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-            --><input type="submit" class="fadeIn fourth" value="Log In">
+            {% render_field form.username class="fadeIn second"%}
+            {%  render_field form.password class="fadeIn third"%}
+            <input type="submit" class="fadeIn fourth" value="Log In">
+
         </form>
         <div id="formFooter">
             <a class="underlineHover" href="#">Forgot Password?</a> &nbsp;&nbsp;&nbsp;
-            <a class="underlineHover" href="#">New Registration</a>
+            <a class="underlineHover" href="../UserRegistration">New Registration</a>
         </div>
     </div>
 </div>
