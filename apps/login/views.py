@@ -15,6 +15,9 @@ def validateLogin(request):
         if form_data.is_valid():
             try:
                 user = EN_Users.objects.get(username=request.POST.get('username'), password=request.POST.get('password'))
+                request.session['userid']=user.id
+                request.session['username']=user.name
+                request.session['useremail']=user.email
                 return HttpResponseRedirect("../Home")
             except Exception:
                 messages.error(request, "Invalid Login Credentials")

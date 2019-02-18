@@ -26,6 +26,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.authentication.MW_Authentication',
+
 ]
 
 ROOT_URLCONF = 'financemanager.urls'
@@ -84,7 +86,7 @@ USE_TZ = True
 
 #ARAVIND : Below keys wont work (custom middleware for session used instead)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 1200 #seconds | 20 mins
+SESSION_COOKIE_AGE = 100 #seconds | 20 mins
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
