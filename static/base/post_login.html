@@ -33,6 +33,13 @@
                 <ul class="nav navbar-nav">
 
                     <li class="dropdown messages-menu">
+                        <a class="dropdown-toggle" data-toggle="modal" data-target="#modal-default">
+                            <button class="btn btn-xs btn-success"><i class="fa fa-dollar"></i> &nbsp;&nbsp;Add Expense</button>
+                            <span class="label label-warning" id="notification_count_top"></span>
+                        </a>
+                    </li>
+
+                    <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
                             <span class="label label-warning" id="notification_count_top"></span>
@@ -166,15 +173,27 @@
         <strong>Copyright &copy; 2016 <a href="#">Finance Manager V.1.0</a>.</strong> All rights reserved.
     </footer>
 
-    <!---- MODAL START---------------------------------->
+    <!---- EXPENSE MODAL START---------------------------------->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
-                {% block modal %} {%  endblock %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Expense Here</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-    <!---- MODAL END ----------------------------------->
+    <!---- EXPENSE MODAL END ----------------------------------->
+
     <div class="control-sidebar-bg"></div>
 </div>
 

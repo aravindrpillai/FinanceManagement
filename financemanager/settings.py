@@ -86,7 +86,7 @@ USE_TZ = True
 
 #ARAVIND : Below keys wont work (custom middleware for session used instead)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 100 #seconds | 20 mins
+SESSION_COOKIE_AGE = 10000 #seconds | 20 mins
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
