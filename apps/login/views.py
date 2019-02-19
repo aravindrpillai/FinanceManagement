@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from apps.login.form import FORM_Login
 from apps.userregistration.models import EN_Users
+from properties.session_properties import SessionProperties
+
 
 def index(request):
     template = loader.get_template("user_login_page.html")
@@ -15,9 +17,9 @@ def validateLogin(request):
         if form_data.is_valid():
             try:
                 user = EN_Users.objects.get(username=request.POST.get('username'), password=request.POST.get('password'))
-                request.session['userid']=user.id
-                request.session['username']=user.name
-                request.session['useremail']=user.email
+                request.session[SessionProperties.USER_ID]=user.id
+                request.session[SessionProperties.USER_NAME]=user.name
+                request.session[SessionProperties.USER_EMAIL]=user.email
                 return HttpResponseRedirect("../Home")
             except Exception:
                 messages.error(request, "Invalid Login Credentials")
