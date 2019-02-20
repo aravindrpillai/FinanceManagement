@@ -6,5 +6,6 @@ urlpatterns = [
     path(r'UserRegistration/', include("apps.userregistration.urls")),
     path(r'Login/', include("apps.login.urls")),
     path(r'Home/', include("apps.home.urls")),
+    path(r'Categories/', include("apps.categories.urls")),
 
 ]

@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'apps.userregistration',
     'apps.login',
     'apps.home',
+    'apps.categories',
 ]
 
 MIDDLEWARE = [
@@ -40,6 +41,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/userregistration/templates'),
             os.path.join(BASE_DIR, 'apps/login/templates'),
             os.path.join(BASE_DIR, 'apps/home/templates'),
+            os.path.join(BASE_DIR, 'apps/categories/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
