@@ -11,7 +11,68 @@
 {% endblock %}
 
 {% block content %}
-     <h1>Categories Page</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Categories</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+                            <input type="text" id="category_name" placeholder="Add New Category" class="form-control">
+                            <span class="input-group-btn">
+                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Loan</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Petrol</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Fixed Monthly Expense </strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; PPF</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Parlour</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Amma</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Rent</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Sub Categories</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+                            <input type="text" id="category_name" placeholder="Add New Sub Category" class="form-control">
+                            <span class="input-group-btn">
+                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Loan</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Petrol</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Fixed Monthly Expense </strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; PPF</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Parlour</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Amma</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Rent</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 
@@ -20,4 +81,38 @@
 {% endblock %}
 
 {% block page_specific_js  %}
+    <script>
+        loadCategories();
+        function loadCategories(){
+            $.ajax({
+                url: "LoadCategories",
+                type:"POST",
+                success:function(data){
+                    alert(data);
+                },
+                error:function(data){
+                    alert("Error : "+data.responseText);
+                }
+            });
+        }
+
+        function saveCategory(){
+            $.ajax({
+                url: "SaveCategory",
+                type:"POST",
+                data:{
+                    "category_name":$("#category_name").val()
+                },
+                success:function(data){
+                    alert(data);
+                },
+                error:function(data){
+                    alert("Error : "+data.responseText);
+                }
+            });
+        }
+
+
+
+    </script>
 {% endblock %}
