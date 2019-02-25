@@ -110,6 +110,9 @@
                 <li class="{{ is_category }}">
                     <a href="../Categories"><i class="fa fa-list-alt"></i> <span>Categories</span></a>
                 </li>
+                <li class="{{ is_expense }}">
+                    <a href="../Expense"><i class="fa fa-money"></i> <span>Expenses</span></a>
+                </li>
                 <!-----SIDEBAR ENDS---------->
 
             </ul>
@@ -190,6 +193,11 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Category * </label>
+                                <input type="text" class="form-control" placeholder="Category">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Sub Category</label>
                                 <input type="text" class="form-control" placeholder="Category">
                             </div>
 

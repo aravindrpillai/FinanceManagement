@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'apps.login',
     'apps.home',
     'apps.categories',
+    'apps.expense',
 ]
 
 MIDDLEWARE = [
@@ -42,6 +43,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/login/templates'),
             os.path.join(BASE_DIR, 'apps/home/templates'),
             os.path.join(BASE_DIR, 'apps/categories/templates'),
+            os.path.join(BASE_DIR, 'apps/expense/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
