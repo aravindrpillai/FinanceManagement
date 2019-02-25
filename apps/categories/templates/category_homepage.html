@@ -28,14 +28,7 @@
                     </div>
                     <div class="box">
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Loan</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Petrol</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Fixed Monthly Expense </strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; PPF</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Parlour</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Amma</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Rent</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                            <table class="table table-hover" id="category_table">
                             </table>
                         </div>
                     </div>
@@ -58,14 +51,7 @@
                     </div>
                     <div class="box">
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Loan</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Petrol</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Fixed Monthly Expense </strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; PPF</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Parlour</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Amma</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
-                                <tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp; Rent</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i style="color: red" class="fa fa-trash"></i></td></tr>
+                            <table class="table table-hover" id="sub_category_table">
                             </table>
                         </div>
                     </div>
@@ -88,7 +74,12 @@
                 url: "LoadCategories",
                 type:"POST",
                 success:function(data){
-                    alert(data);
+                    var parsedData = $.parseJSON(data);
+                    var content = "";
+                    $.each(parsedData, function(index, element) {
+                        content += '<tr onClick="loadSubCategories('+element["id"]+')"><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
+                    });
+                    $("#category_table").html(content)
                 },
                 error:function(data){
                     alert("Error : "+data.responseText);
@@ -104,7 +95,61 @@
                     "category_name":$("#category_name").val()
                 },
                 success:function(data){
-                    alert(data);
+                    if(data == "1" || data == 1){
+                        $("#category_name").val();
+                        loadCategories();
+                    }
+                    else{
+                        alert(data);
+                    }
+                },
+                error:function(data){
+                    alert("Error : "+data.responseText);
+                }
+            });
+        }
+
+        function deleteCategory(categoryId){
+            if(confirm("Confirm your action : ")){
+                $.ajax({
+                    url: "DeleteCategory",
+                    type:"POST",
+                    data:{
+                        "id":categoryId
+                    },
+                    success:function(data){
+                        if(data == "1" || data == 1){
+                            $("#category_name").val();
+                            loadCategories();
+                        }
+                        else{
+                            alert(data);
+                        }
+                    },
+                    error:function(data){
+                        alert("Error : "+data.responseText);
+                    }
+                });
+            }
+        }
+
+
+        function loadSubCategories(id){
+            $.ajax({
+                url: "LoadSubCategories",
+                type:"POST",
+                data : { "id" : id },
+                success:function(data){
+                    if(data == "0" || data==0){
+                        alert(data);
+                    }else{
+                        var parsedData = $.parseJSON(data);
+                        var content = "";
+                        $.each(parsedData, function(index, element) {
+                            content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
+                        });
+                        $("#sub_category_table").html(content)
+                    }
                 },
                 error:function(data){
                     alert("Error : "+data.responseText);
