@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="sub_categories_div">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Sub Categories of <i id="sel_category_on_sub_cat"></i></h3>
@@ -69,6 +69,7 @@
 {% block page_specific_js  %}
     <script>
         loadCategories();
+        $("#sub_categories_div").hide();
         function loadCategories(){
             $.ajax({
                 url: "LoadCategories",
@@ -161,7 +162,8 @@
                         $.each(parsedData, function(index, element) {
                             content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteSubCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
                         });
-                        $("#sub_category_table").html(content)
+                        $("#sub_category_table").html(content);
+                        $("#sub_categories_div").show();
                     }
                 },
                 error:function(data){
