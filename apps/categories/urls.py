@@ -7,4 +7,6 @@ urlpatterns = [
     path(r'SaveCategory',views.saveCategory, name="Save category and return to same page"),
     path(r'DeleteCategory',views.deleteCategory, name="Delete category and return to same page"),
     path(r'LoadSubCategories',views.loadSubCategories, name="Load sub categories and return to same page"),
+    path(r'SaveSubCategory',views.saveSubCategory, name="Save sub category and return to same page"),
+    path(r'DeleteSubCategory',views.deleteSubCategory, name="Delete sub categories and return to same page"),
 ]

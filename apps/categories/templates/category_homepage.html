@@ -38,14 +38,14 @@
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Sub Categories</h3>
+                    <h3 class="box-title">Sub Categories of <i id="sel_category_on_sub_cat"></i></h3>
                 </div>
                 <div class="box-body">
                     <div class="form-group">
                         <div class="input-group input-group-lg">
-                            <input type="text" id="category_name" placeholder="Add New Sub Category" class="form-control">
+                            <input type="text" id="sub_category_name" placeholder="Add New Sub Category" class="form-control">
                             <span class="input-group-btn">
-                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                    <button onClick="saveSubCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
                                 </span>
                         </div>
                     </div>
@@ -77,7 +77,10 @@
                     var parsedData = $.parseJSON(data);
                     var content = "";
                     $.each(parsedData, function(index, element) {
-                        content += '<tr onClick="loadSubCategories('+element["id"]+')"><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
+                        content += '<tr onClick="loadSubCategories('+element["id"]+',\''+element["name"]+'\')">';
+                        content += '<td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td>';
+                        content += '<td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td>';
+                        content += '</tr>'
                     });
                     $("#category_table").html(content)
                 },
@@ -96,11 +99,11 @@
                 },
                 success:function(data){
                     if(data == "1" || data == 1){
-                        $("#category_name").val();
+                        $("#category_name").val("");
                         loadCategories();
                     }
                     else{
-                        alert(data);
+                        alert("Failed to delete");
                     }
                 },
                 error:function(data){
@@ -119,8 +122,58 @@
                     },
                     success:function(data){
                         if(data == "1" || data == 1){
-                            $("#category_name").val();
                             loadCategories();
+                        } else {
+                            alert("Failed to delete category");
+                        }
+                    },
+                    error:function(data){
+                        alert("Error : "+data.responseText);
+                    }
+                });
+            }
+        }
+
+        var categoryId = 0;
+        var categoryName = "";
+        function loadSubCategories(id,catName){
+            categoryId = id;
+            categoryName = catName;
+            $("#sel_category_on_sub_cat").html(categoryName);
+            $.ajax({
+                url: "LoadSubCategories",
+                type:"POST",
+                data : { "id" : id },
+                success:function(data){
+                    if(data == "0" || data==0){
+                        alert(data);
+                    }else{
+                        var parsedData = $.parseJSON(data);
+                        var content = "";
+                        $.each(parsedData, function(index, element) {
+                            content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteSubCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
+                        });
+                        $("#sub_category_table").html(content)
+                    }
+                },
+                error:function(data){
+                    alert("Error : "+data.responseText);
+                }
+            });
+        }
+
+
+        function deleteSubCategory(subCategoryId){
+            if(confirm("Confirm your action : ")){
+                $.ajax({
+                    url: "DeleteSubCategory",
+                    type:"POST",
+                    data:{
+                        "id":subCategoryId
+                    },
+                    success:function(data){
+                        if(data == "1" || data == 1){
+                            loadSubCategories(categoryId,categoryName);
                         }
                         else{
                             alert(data);
@@ -134,21 +187,21 @@
         }
 
 
-        function loadSubCategories(id){
+        function saveSubCategory(){
             $.ajax({
-                url: "LoadSubCategories",
+                url: "SaveSubCategory",
                 type:"POST",
-                data : { "id" : id },
+                data:{
+                    "category_id":categoryId,
+                    "sub_category_name":$("#sub_category_name").val()
+                },
                 success:function(data){
-                    if(data == "0" || data==0){
+                    if(data == "1" || data == 1){
+                        $("#sub_category_name").val("");
+                        loadSubCategories(categoryId,categoryName);
+                    }
+                    else{
                         alert(data);
-                    }else{
-                        var parsedData = $.parseJSON(data);
-                        var content = "";
-                        $.each(parsedData, function(index, element) {
-                            content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
-                        });
-                        $("#sub_category_table").html(content)
                     }
                 },
                 error:function(data){
@@ -156,6 +209,7 @@
                 }
             });
         }
+
 
 
 
