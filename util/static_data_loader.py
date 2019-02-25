@@ -1,6 +1,8 @@
+import datetime
+
+from apps.categories.models import EN_Categories
 from apps.userregistration.models import EN_Users
 from properties.session_properties import SessionProperties
-
 
 class StaticDataLoader:
 
@@ -14,5 +16,13 @@ class StaticDataLoader:
                 "name": user.name,
                 "email": user.email,
             },
-            "page": page
+            "page": page,
+            "categories": self.__getUserCategories(),
+            "current_date": datetime.datetime.now().strftime("%m/%d/%Y"),
         }
+
+    def __getUserCategories(self):
+        return [{
+            "id":cat.id,
+            "name":cat.name
+        }for cat in EN_Categories.objects.filter(user_id=self.user_id, retired=False)]

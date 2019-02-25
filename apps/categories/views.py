@@ -12,7 +12,6 @@ def index(request):
     return HttpResponse(template.render(data, request))
 
 
-@csrf_exempt
 def loadCategories(request):
     if request.is_ajax():
         categoryList = [{
@@ -24,7 +23,6 @@ def loadCategories(request):
         return HttpResponseRedirect("../Categories")
 
 
-@csrf_exempt
 def saveCategory(request):
     if request.is_ajax():
         try:
@@ -44,7 +42,7 @@ def saveCategory(request):
         return HttpResponseRedirect("../Categories")
 
 
-@csrf_exempt
+
 def deleteCategory(request):
     if request.is_ajax():
         try:
@@ -66,8 +64,6 @@ def deleteCategory(request):
     else:
         return HttpResponseRedirect("../Categories")
 
-
-@csrf_exempt
 def loadSubCategories(request):
     if request.is_ajax():
         try:
@@ -87,7 +83,6 @@ def loadSubCategories(request):
         return HttpResponseRedirect("../Categories")
 
 
-@csrf_exempt
 def deleteSubCategory(request):
     if request.is_ajax():
         try:
@@ -107,8 +102,6 @@ def deleteSubCategory(request):
         return HttpResponseRedirect("../Categories")
 
 
-
-@csrf_exempt
 def saveSubCategory(request):
     if request.is_ajax():
         try:
