@@ -191,7 +191,7 @@
                 <div class="modal-body">
                     <div class="box-body">
                         <div class="form-group">
-                            <label>Category * </label>
+                            <label style="width: 100%">Category * <i class="pull-right"><a >Add Category</a>&nbsp;|&nbsp;<a>Add Sub Category</a></i></label>
                             <select class="form-control" id="category" onchange="loadSubCategory()">
                                 <option value="0">Select Category</option>
                                 {% for category in categories %}
@@ -200,7 +200,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="sub_category_div">
                             <label>Sub Category</label>
                             <select class="form-control" id="sub_category">
                             </select>
@@ -250,6 +250,7 @@
 {% block page_specific_js %} {% endblock %}
 <script src="/static/bootstrap/dist/js/pages/dashboard.js"></script>
 <script>
+    $("#sub_category_div").hide();
     function loadSubCategory(){
         var category_id = $("#category").val();
         if(category_id != "0" || category_id != 0){
@@ -265,6 +266,11 @@
                         alert(data);
                     }else{
                         var parsedData = $.parseJSON(data);
+                        if(parsedData.length < 1){
+                            $("#sub_category_div").hide();
+                        }else{
+                            $("#sub_category_div").show();
+                        }
                         var content = "";
                         $.each(parsedData, function(index, element) {
                             content += '<option value="'+element["id"]+'">'+element["name"]+'</option>';
@@ -276,6 +282,8 @@
                     alert("Error : "+data.responseText);
                 }
             });
+        }else{
+            $("#sub_category_div").hide();
         }
     }
 
