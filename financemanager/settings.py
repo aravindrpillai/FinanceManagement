@@ -3,7 +3,13 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g&gzrq^mzc^5xq^tirtr3j^2e7bmmszykzuo38c+mymlg-$+^o'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '172.31.19.131',
+    '13.232.2.10',
+    '127.0.0.1',
+    'localhost',
+    'fm.wokidz.com'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
