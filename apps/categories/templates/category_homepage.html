@@ -22,8 +22,10 @@
                         <div class="input-group input-group-lg">
                             <input type="text" id="category_name" placeholder="Add New Category" class="form-control">
                             <span class="input-group-btn">
-                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
-                                </span>
+                                <button onClick="saveCategory()" type="submit" id="add_cat_btn" class="btn btn-info btn-flat">Add</button>
+                                <button onClick="updateCategory()" type="submit" id="update_cat_btn" class="btn btn-warning btn-flat">Update</button>
+                                <button onClick="closeUpdate('category')" type="submit" id="update_cat_close_btn" class="btn btn-danger btn-flat">X</button>
+                            </span>
                         </div>
                     </div>
                     <div class="box">
@@ -45,8 +47,10 @@
                         <div class="input-group input-group-lg">
                             <input type="text" id="sub_category_name" placeholder="Add New Sub Category" class="form-control">
                             <span class="input-group-btn">
-                                    <button onClick="saveSubCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
-                                </span>
+                                <button onClick="saveSubCategory()" type="submit" id="add_subcat_btn" class="btn btn-info btn-flat">Add</button>
+                                <button onClick="updateSubCategory()" type="submit" id="update_subcat_btn" class="btn btn-warning btn-flat">Update</button>
+                                <button onClick="closeUpdate('subcategory')" type="submit" id="update_subcat_close_btn" class="btn btn-danger btn-flat">X</button>
+                            </span>
                         </div>
                     </div>
                     <div class="box">
@@ -83,7 +87,7 @@
                     $.each(parsedData, function(index, element) {
                         content += '<tr onClick="loadSubCategories('+element["id"]+',\''+element["name"]+'\')">';
                         content += '<td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td>';
-                        content += '<td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td>';
+                        content += '<td class="pull-right"><i onClick="updateData('+element["id"]+',\'category\',\''+element["name"]+'\')" style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td>';
                         content += '</tr>'
                     });
                     $("#category_table").html(content)
@@ -159,7 +163,7 @@
                         var parsedData = $.parseJSON(data);
                         var content = "";
                         $.each(parsedData, function(index, element) {
-                            content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteSubCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
+                            content += '<tr><td><i class="fa fa-dot-circle-o"></i> <strong>&nbsp;&nbsp;'+ element["name"]+'</strong></td><td class="pull-right"><i onClick="updateData('+element["id"]+',\'subcategory\',\''+element["name"]+'\')"  style="color: deeppink" class="fa fa-pencil"></i> &nbsp;&nbsp; <i onClick="deleteSubCategory('+element["id"]+')" style="color: red" class="fa fa-trash"></i></td></tr>'
                         });
                         $("#sub_category_table").html(content);
                         $("#sub_categories_div").show();
@@ -221,5 +225,73 @@
             });
         }
 
+
+        $("#update_cat_btn").hide();
+        $("#update_cat_close_btn").hide();
+        $("#update_subcat_btn").hide();
+        $("#update_subcat_close_btn").hide();
+        var catUpdateID = 0;
+        var catUpdateName = "";
+        var subcatUpdateID = "";
+        var subcatUpdateName = "";
+        function updateData(id, type, name){
+            if(type == 'category'){
+                catUpdateID = id;
+                catUpdateName = name;
+                $("#category_name").val(name);
+                $("#add_cat_btn").hide();
+                $("#update_cat_btn").show();
+                $("#update_cat_close_btn").show();
+            }
+            if(type == 'subcategory'){
+                subcatUpdateID = id;
+                subcatUpdateName = name;
+                $("#sub_category_name").val(name);
+                $("#add_subcat_btn").hide();
+                $("#update_subcat_btn").show();
+                $("#update_subcat_close_btn").show();
+            }
+        }
+
+        function closeUpdate(type){
+            if(type == 'category'){
+                catUpdateID = 0;
+                catUpdateName = "";
+                $("#category_name").val("");
+                $("#update_cat_btn").hide();
+                $("#update_cat_close_btn").hide();
+                $("#add_cat_btn").show();
+            }
+            if(type == 'subcategory'){
+                subcatUpdateID = 0;
+                subcatUpdateName = "";
+                $("#sub_category_name").val("");
+                $("#update_subcat_btn").hide();
+                $("#update_subcat_close_btn").hide();
+                $("#add_subcat_btn").show();
+            }
+        }
+
+        function updateCategory() {
+            var name = $("#category_name").val();
+            if (name == catUpdateName) {
+                alert("No changes found")
+            } else if (name == "") {
+                alert("Category name cannot be empty")
+            } else {
+                alert("ok ok -- id -> " + catUpdateID)
+            }
+        }
+        function updateSubCategory(){
+            var name = $("#sub_category_name").val();
+            if(name == subcatUpdateName){
+                alert("No changes found")
+            }else if(name == ""){
+                alert("Subcategory name cannot be empty")
+            }else{
+                alert("ok ok -- id -> "+subcatUpdateID)
+            }
+
+        }
     </script>
 {% endblock %}
