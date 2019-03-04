@@ -32,7 +32,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
 
-                    <li class="dropdown messages-menu">
+                    <li class="dropdown messages-menu" onclick="loadCategories()">
                         <a class="dropdown-toggle" data-toggle="modal" data-target="#modal-default">
                             <button class="btn btn-xs btn-success"><i class="fa fa-dollar"></i> &nbsp;&nbsp;Add Expense</button>
                             <span class="label label-warning" id="notification_count_top"></span>
@@ -60,13 +60,13 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Aravind R Pillai</span>
+                            <span class="hidden-xs">{{ page_data.name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="user-header">
                                 <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                 <p>{{ ui_data.header.name }}
-                                    <small>Member ID  : <b>234567890</b></small>
+                                    <small>Email ID  : <b>{{ page_data.email }}</b></small>
                                 </p>
                             </li>
                             <li class="user-footer">
@@ -94,7 +94,7 @@
                     <img src="../static/bootstrap/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div style="cursor:pointer" class="pull-left info">
-                    <p>Aravind R Pillai</p>
+                    <p>{{ page_data.name }}</p>
                     <a id="online_status"><i class="fa fa-circle text-success"></i> Online</a>
 
                 </div>
@@ -112,6 +112,9 @@
                 </li>
                 <li class="{{ is_expense }}">
                     <a href="../Expense"><i class="fa fa-money"></i> <span>Expenses</span></a>
+                </li>
+                <li class="{{ is_tags }}">
+                    <a href="../Tags"><i class="fa fa-tags"></i> <span>Tags</span></a>
                 </li>
                 <!-----SIDEBAR ENDS---------->
 
@@ -182,7 +185,7 @@
     <!---- EXPENSE MODAL START---------------------------------->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" id="add_expense_modal">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
@@ -190,13 +193,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="box-body">
-                        <div class="form-group">
-                            <label style="width: 100%">Category * <i class="pull-right"><a >Add Category</a>&nbsp;|&nbsp;<a>Add Sub Category</a></i></label>
+                        <div class="form-group" id="category_div">
+                            <label style="width: 100%">Category * <i class="pull-right"><a onclick="flipPage()">Add Category/Sub Category</a></i></label>
                             <select class="form-control" id="category" onchange="loadSubCategory()">
-                                <option value="0">Select Category</option>
-                                {% for category in categories %}
-                                    <option value="{{ category.id }}">{{ category.name }}</option>
-                                {% endfor %}
                             </select>
                         </div>
 
@@ -235,6 +234,54 @@
                     <button type="button" class="btn btn-primary" onclick="submitExpense()">Add Expense</button>
                 </div>
             </div>
+            <div class="modal-content" id="add_category_modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add New Category</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body" id="add_new_category">
+
+                        <div class="form-group">
+                            <div class="input-group input-group">
+                                <input type="text" id="category_name" placeholder="Add New Category" class="form-control">
+                                <span class="input-group-btn">
+                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body" id="add_new_sub_category">
+                        <div class="form-group" style="width: 100%">
+                            <div style="width: 100%" class="input-group input-group">
+                                <select style="width: 100%" class="form-control" id="category_for_sub_cat">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group input-group">
+                                <input type="text" id="category_name" placeholder="Add New SubCategory" class="form-control">
+                                <span class="input-group-btn">
+                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="add_new_category_btn" style="cursor:pointer; text-align: center;" onclick="add_category()"><a>Add Category</a></div>
+                    <div id="add_new_sub_category_btn" style="cursor:pointer; text-align: center;" onclick="add_sub_category()"><a>Add SubCategory</a></div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" onclick="flipPage()">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="createCatgory()">Add Category</button>
+                </div>
+            </div>
         </div>
     </div>
     <!---- EXPENSE MODAL END ----------------------------------->
@@ -250,6 +297,38 @@
 {% block page_specific_js %} {% endblock %}
 <script src="/static/bootstrap/dist/js/pages/dashboard.js"></script>
 <script>
+
+    function loadCategories(){
+        $.ajax({
+            url: "../Categories/LoadCategories",
+            type:"POST",
+            data : {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            success:function(data){
+                if(data == "0" || data==0){
+                    alert("Failed to load Categories");
+                }else{
+                    var parsedData = $.parseJSON(data);
+                    var content = "";
+                    if(parsedData.length < 1){
+                        content = '<option value="0">No Category To Select</option>';
+                    }else {
+                        $.each(parsedData, function (index, element) {
+                            content += '<option value="' + element["id"] + '">' + element["name"] + '</option>';
+                        });
+                    }
+                    $("#category").html(content);
+                    $("#category_for_sub_cat").html(content);
+                }
+            },
+            error:function(data){
+                alert("Error : "+data.responseText);
+            }
+        });
+    }
+
+
     $("#sub_category_div").hide();
     function loadSubCategory(){
         var category_id = $("#category").val();
@@ -318,6 +397,37 @@
     function clearExpenseForm(){
         $("#amount").val("");
         $("#description").val("");
+    }
+
+    $("#add_category_modal").hide();
+    var is_category_modal_on = false;
+    function flipPage(){
+        is_category_modal_on = !is_category_modal_on;
+        if(is_category_modal_on){
+            $("#add_expense_modal").hide();
+            $("#add_category_modal").show();
+        }else{
+            $("#add_category_modal").hide();
+            $("#add_expense_modal").show();
+        }
+    }
+
+    add_category();
+    function add_category(){
+        $("#add_new_category_btn").hide();
+        $("#add_new_sub_category").hide();
+        $("#add_new_category").show();
+        $("#add_new_sub_category_btn").show();
+
+    }
+
+    function add_sub_category(){
+        loadCategories();
+        $("#add_new_category").hide();
+        $("#add_new_sub_category_btn").hide();
+        $("#add_new_category_btn").show();
+        $("#add_new_sub_category").show();
+
     }
 </script>
 

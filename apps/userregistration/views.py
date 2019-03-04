@@ -17,7 +17,7 @@ def submitData(request):
                 user_table = EN_Users()
                 user_table.username = form_data.cleaned_data.get("username")
                 user_table.password = form_data.cleaned_data.get("password")
-                user_table.Name = form_data.cleaned_data.get("name")
+                user_table.name = form_data.cleaned_data.get("name")
                 user_table.email = form_data.cleaned_data.get("email")
                 user_table.save()
                 messages.success(request,"Successfully registered")

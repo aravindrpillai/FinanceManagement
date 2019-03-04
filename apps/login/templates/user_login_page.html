@@ -295,7 +295,7 @@
             {% csrf_token %}
             {% load widget_tweaks %}
             {% render_field form.username class="fadeIn second" placeholder="Username"%}
-            {%  render_field form.password class="fadeIn third"  placeholder="Password"%}
+            {% render_field form.password class="fadeIn third" placeholder="Password"%}
             <input type="submit" class="fadeIn fourth" value="Log In">
 
         </form>
