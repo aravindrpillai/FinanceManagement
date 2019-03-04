@@ -32,7 +32,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
 
-                    <li class="dropdown messages-menu" onclick="loadCategories()">
+                    <li class="dropdown messages-menu" onclick="loadCategoriesFromHome()">
                         <a class="dropdown-toggle" data-toggle="modal" data-target="#modal-default">
                             <button class="btn btn-xs btn-success"><i class="fa fa-dollar"></i> &nbsp;&nbsp;Add Expense</button>
                             <span class="label label-warning" id="notification_count_top"></span>
@@ -195,7 +195,7 @@
                     <div class="box-body">
                         <div class="form-group" id="category_div">
                             <label style="width: 100%">Category * <i class="pull-right"><a onclick="flipPage()">Add Category/Sub Category</a></i></label>
-                            <select class="form-control" id="category" onchange="loadSubCategory()">
+                            <select class="form-control" id="category" onchange="loadSubCategoryFromHome()">
                             </select>
                         </div>
 
@@ -245,9 +245,9 @@
 
                         <div class="form-group">
                             <div class="input-group input-group">
-                                <input type="text" id="category_name" placeholder="Add New Category" class="form-control">
+                                <input type="text" id="new_category_name" placeholder="Add New Category" class="form-control">
                                 <span class="input-group-btn">
-                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                    <button onClick="saveCategoryFromHome()" type="submit" class="btn btn-info btn-flat">Add</button>
                                 </span>
                             </div>
                         </div>
@@ -263,17 +263,17 @@
 
                         <div class="form-group">
                             <div class="input-group input-group">
-                                <input type="text" id="category_name" placeholder="Add New SubCategory" class="form-control">
+                                <input type="text" id="new_sub_category_name" placeholder="Add New SubCategory" class="form-control">
                                 <span class="input-group-btn">
-                                    <button onClick="saveCategory()" type="submit" class="btn btn-info btn-flat">Add</button>
+                                    <button onClick="saveSubCategoryFromHome()" type="submit" class="btn btn-info btn-flat">Add</button>
                                 </span>
                             </div>
                         </div>
 
                     </div>
 
-                    <div id="add_new_category_btn" style="cursor:pointer; text-align: center;" onclick="add_category()"><a>Add Category</a></div>
-                    <div id="add_new_sub_category_btn" style="cursor:pointer; text-align: center;" onclick="add_sub_category()"><a>Add SubCategory</a></div>
+                    <div id="add_new_category_btn" style="cursor:pointer; text-align: center;" onclick="add_category_on_click()"><a>Add Category</a></div>
+                    <div id="add_new_sub_category_btn" style="cursor:pointer; text-align: center;" onclick="add_sub_category_on_click()"><a>Add SubCategory</a></div>
 
 
                 </div>
@@ -298,7 +298,7 @@
 <script src="/static/bootstrap/dist/js/pages/dashboard.js"></script>
 <script>
 
-    function loadCategories(){
+    function loadCategoriesFromHome(){
         $.ajax({
             url: "../Categories/LoadCategories",
             type:"POST",
@@ -330,7 +330,7 @@
 
 
     $("#sub_category_div").hide();
-    function loadSubCategory(){
+    function loadSubCategoryFromHome(){
         var category_id = $("#category").val();
         if(category_id != "0" || category_id != 0){
             $.ajax({
@@ -412,8 +412,8 @@
         }
     }
 
-    add_category();
-    function add_category(){
+    add_category_on_click();
+    function add_category_on_click(){
         $("#add_new_category_btn").hide();
         $("#add_new_sub_category").hide();
         $("#add_new_category").show();
@@ -421,14 +421,63 @@
 
     }
 
-    function add_sub_category(){
+    function add_sub_category_on_click(){
         loadCategories();
         $("#add_new_category").hide();
         $("#add_new_sub_category_btn").hide();
         $("#add_new_category_btn").show();
         $("#add_new_sub_category").show();
-
     }
+
+    function saveCategoryFromHome(){
+        $.ajax({
+            url: "../Categories/SaveCategory",
+            type:"POST",
+            data:{
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+                "category_name":$("#new_category_name").val()
+            },
+            success:function(data){
+                if(data == "1" || data == 1){
+                    $("#new_category_name").val("");
+                    alert("Category Added Successfully");
+                    loadCategoriesFromHome();
+                }
+                else{
+                    alert("Failed to add category");
+                }
+            },
+            error:function(data){
+                alert("Error : "+data.responseText);
+            }
+        });
+    }
+
+    function saveSubCategoryFromHome(){
+        $.ajax({
+            url: "../Categories/SaveSubCategory",
+            type:"POST",
+            data:{
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+                "category_id":$("#category_for_sub_cat").val(),
+                "sub_category_name":$("#new_sub_category_name").val()
+            },
+            success:function(data){
+                if(data == "1" || data == 1){
+                    alert("Subcategory Added successfuly");
+                    $("#new_sub_category_name").val("");
+                    loadSubCategoriesFromHome(categoryId,categoryName);
+                }
+                else{
+                    alert(data);
+                }
+            },
+            error:function(data){
+                alert("Error : "+data.responseText);
+            }
+        });
+    }
+
 </script>
 
 

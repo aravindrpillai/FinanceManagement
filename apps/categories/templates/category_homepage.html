@@ -106,9 +106,8 @@
                     if(data == "1" || data == 1){
                         $("#category_name").val("");
                         loadCategories();
-                    }
-                    else{
-                        alert("Failed to delete");
+                    }else{
+                        alert(data);
                     }
                 },
                 error:function(data){

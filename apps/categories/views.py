@@ -37,7 +37,7 @@ def saveCategory(request):
             category.save()
             return HttpResponse(1)
         except Exception as e:
-            return HttpResponse(e.__str__())
+                return HttpResponse(e.__str__())
     else:
         return HttpResponseRedirect("../Categories")
 
@@ -55,9 +55,13 @@ def deleteCategory(request):
                 cat = EN_Categories.objects.get(id=int(id))
                 cat.retired = True
                 cat.save()
-                subCat = EN_SubCategories.objects.get(category=cat)
-                subCat.retired = True
-                subCat.save()
+                try:
+                    subCat = EN_SubCategories.objects.get(category=cat)
+                    subCat.retired = True
+                    subCat.save()
+                except:
+                    #supressing error as its an expected outcome
+                    pass
                 return HttpResponse(1)
         except Exception as e:
             return HttpResponse(e.__str__())
